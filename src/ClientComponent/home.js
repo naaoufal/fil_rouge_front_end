@@ -5,6 +5,7 @@ import Header from './Header'
 import ModalConn from './Modals/ModalConn'
 import './styles/index.css'
 
+
 function UserHome () {
 
     let history = useHistory()
@@ -25,7 +26,7 @@ function UserHome () {
 
     // function render tag data :
     const renderTagsData = () => {
-        fetch("http://localhost:3001/api/tags/publicTags").then(res => {
+        fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
             return res.json()
         }).then(data => {
             setTags(data)
@@ -34,7 +35,7 @@ function UserHome () {
 
     // function render post data :
     const renderPostsData = () => {
-        fetch("http://localhost:3001/api/posts/all").then(res => {
+        fetch(process.env.REACT_APP_PUBLIC_URL+`/posts/all`).then(res => {
             return res.json()
         }).then(data => {
             setPosts(data)
@@ -47,7 +48,7 @@ function UserHome () {
     // function to add posts :
     const addPost = () => {
         //console.log(titlePost, descPost, tagPost)
-        fetch("http://localhost:3001/api/posts/add", {
+        fetch(process.env.REACT_APP_PUBLIC_URL+`/posts/add`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
