@@ -75,6 +75,11 @@ function UserHome () {
         })
     }
 
+    // check && redirect Link :
+    const redirectLink = () => {
+        
+    }
+
     // render function when component loaded :
     useEffect(() => {
         renderTagsData()
@@ -155,7 +160,15 @@ function UserHome () {
                                     {i.is_valid == "true" ?
                                         <div class="room-box">
                                             <h5 class="text-primary" style={{cursor : "pointer"}}>
-                                                <a onClick={() => history.push("/postDetail", i)}>{i.title}</a>
+                                                <a onClick={() => {
+                                                    if(info != null) {
+                                                        history.push("/postDetail", i)
+                                                    } else {
+                                                        toast.warning("Pls Check if u are Connected Or Not !!!")
+                                                    }
+                                                }}>
+                                                    {i.title}
+                                                </a>
                                             </h5>
                                             <p>{i.desc}</p>
                                             <p><span class="text-muted">Posté Par :</span> {i.user_id} | <span class="text-muted">Tag Mentionner :</span> {i.tag} | <span class="text-muted">Posté en :</span> {i.createdAt}</p>

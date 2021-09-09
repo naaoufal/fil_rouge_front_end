@@ -31,18 +31,23 @@ function PostDetails () {
     const [comments, setComments] = useState([]);
 
     const location = useLocation()
-    //console.log(location.state)
+    console.log(location.state)
     const data = location.state
 
 
     const sendComment = (e) => {
-        firebase.firestore().collection('comments').add({
-            comment : message,
-            name : info.firstname + info.lastname,
-            user_id : info._id
-        }).then(res => {
-            setMessage("")
-        })
+        if(info != null) {
+            firebase.firestore().collection('comments').add({
+                articlID : location.state._id,
+                comment : message,
+                name : info.firstname + info.lastname,
+                user_id : info._id
+            }).then(res => {
+                setMessage("")
+            })
+        } else {
+            //toast.configure()
+        }
     }
 
     const handleChange = (e) => {
@@ -55,22 +60,29 @@ function PostDetails () {
             //
             snap.docs.map(item => {
                 //console.log(item.data())
-                cmts.push(item.data())
+                if(item.data().articlID == location.state._id) {
+                    console.log(item.data())
+                    cmts.push(item.data())
+                    //setComments(item.data())
+                    setComments(cmts)
+                }
             })
         })
-        setComments(cmts)
-        console.log(cmts)
+        //setComments(cmts)
+        // console.log(cmts)
     }
 
-    useEffect(() => {
-        fetchComments()
-        
+    useEffect( async () => {
+        await fetchComments();
     }, [])
 
-    // console.log(comments)
-    comments.map(cmt => {
-        console.log(cmt.comment)
-    })
+    //console.log(comments)
+
+    function renderCommentFromFireBase () {
+        return comments.map((j) => {
+            <p>${j.comment}</p>;
+        })
+    }
 
     return (
         <section id="container">
@@ -92,6 +104,7 @@ function PostDetails () {
                                     }
                                 </div>
                             </div>
+                            
                             <div className="room-desk">
                                 <div class="room-box" style={{
                                     backgroundColor : "white"
@@ -104,13 +117,15 @@ function PostDetails () {
                                             <div class="headings d-flex justify-content-between align-items-center mb-3">
                                                 <h5>Les Commentaires</h5>
                                             </div>
-                                            {comments.map(message => {
-                                            <>
-                                                <div class="card p-3" style={{height : "auto"}}>
+                                            {renderCommentFromFireBase}
+                                            {/* {comments.map((j) => {
+                                                <p>${j.comment}</p>
+                                            })} */}
+                                            {/* <div class="card p-3" style={{height : "auto"}}>
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div class="user d-flex flex-row align-items-center">
                                                             <span>
-                                                                <small class="font-weight-bold text-primary">{info.firstname + " " + info.lastname}</small>
+                                                                <small class="font-weight-bold text-primary">${info.firstname + " " + info.lastname}</small>
                                                             </span> 
                                                         </div>
                                                         <small>2 days ago</small>
@@ -118,20 +133,19 @@ function PostDetails () {
                                                     <div class="action d-flex justify-content-between mt-2 align-items-center">
                                                         <div class="reply px-4">
                                                             <small>
-                                                                {message.comment}
+                                                                ${j.comment}
                                                             </small>
                                                         </div>
                                                         <span class="badge bg-success">Done</span>
                                                         <span class="badge bg-warning">Cool</span>
                                                         <span class="badge bg-important">Now</span>
                                                     </div>
-                                                </div>
-                                            </>
-                                            })}
+                                                </div> */}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="room-box">
+                                    {info != null ?
                                     <div class="row">
                                         <div className="col-md-10">
                                             <input type="hidden" value={info.firstname} class="form-control" />
@@ -143,6 +157,8 @@ function PostDetails () {
                                             <button onClick={sendComment} class="btn btn-theme">Send</button>
                                         </div>
                                     </div>
+                                    :
+                                    null}
                                 </div>
                             </div>
                         </aside>
