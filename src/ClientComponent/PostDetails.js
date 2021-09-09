@@ -5,20 +5,21 @@ import Header from './Header'
 import './styles/index.css'
 import ModalConn from "./Modals/ModalConn"
 import io from 'socket.io-client';
+import './styles/index.css'
 import firebase from 'firebase';
-import firestore from 'firebase/firestore';
+// import firestore from 'firebase/firestore';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
-    authDomain: "comments-56966.firebaseapp.com",
-    projectId: "comments-56966",
-    storageBucket: "comments-56966.appspot.com",
-    messagingSenderId: "893622129199",
-    appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
-};
+// const firebaseConfig = {
+//     apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
+//     authDomain: "comments-56966.firebaseapp.com",
+//     projectId: "comments-56966",
+//     storageBucket: "comments-56966.appspot.com",
+//     messagingSenderId: "893622129199",
+//     appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
+// };
 
-firebase.initializeApp(firebaseConfig);
-firebase.firestore();
+// firebase.initializeApp(firebaseConfig);
+// firebase.firestore();
 
 function PostDetails () {
 
@@ -29,11 +30,19 @@ function PostDetails () {
     // const [name, setName] = useState("")
     const [message, setMessage] = useState("")
     const [comments, setComments] = useState([]);
+    const [tests, setTest] = useState([])
 
     const location = useLocation()
     console.log(location.state)
     const data = location.state
 
+    const fetchTest = async () => {
+        await fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
+            return res.json()
+        }).then(data => {
+            setTest(data)
+        })
+    }
 
     const sendComment = (e) => {
         if(info != null) {
@@ -94,7 +103,7 @@ function PostDetails () {
                     <div class="chat-room mt">
                         <aside class="mid-side">
                             <div class="chat-room-head">
-                                <h3>{data.title}</h3>
+                                <h3>{data.title} + {data._id}</h3>
                                 <hr></hr>
                                 <div>
                                     {data.stat_post == "Pending" ?
@@ -117,30 +126,15 @@ function PostDetails () {
                                             <div class="headings d-flex justify-content-between align-items-center mb-3">
                                                 <h5>Les Commentaires</h5>
                                             </div>
-                                            {renderCommentFromFireBase}
-                                            {/* {comments.map((j) => {
-                                                <p>${j.comment}</p>
-                                            })} */}
-                                            {/* <div class="card p-3" style={{height : "auto"}}>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="user d-flex flex-row align-items-center">
-                                                            <span>
-                                                                <small class="font-weight-bold text-primary">${info.firstname + " " + info.lastname}</small>
-                                                            </span> 
-                                                        </div>
-                                                        <small>2 days ago</small>
-                                                    </div>
-                                                    <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                                        <div class="reply px-4">
-                                                            <small>
-                                                                ${j.comment}
-                                                            </small>
-                                                        </div>
-                                                        <span class="badge bg-success">Done</span>
-                                                        <span class="badge bg-warning">Cool</span>
-                                                        <span class="badge bg-important">Now</span>
-                                                    </div>
-                                                </div> */}
+                                        </div>
+                                    </div>
+                                    <hr></hr>
+                                    <div className="row">
+                                        <div className="col-md">
+                                            {/* <button onClick={setTest(!tests)}>test</button> */}
+                                            {tests.map(i => {
+                                                <p>{i.name}</p>
+                                            })}
                                         </div>
                                     </div>
                                 </div>

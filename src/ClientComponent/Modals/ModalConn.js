@@ -74,6 +74,14 @@ function ModalConn () {
         console.log(fname, lname, imageIns, genderIns, emailIns, addIns, teleIns, passIns)
     }
 
+    // Google Auth :
+    // const submitGoogleAuth = () => {
+    //     //console.log("this is work")
+    //     fetch("http://localhost:3001/auth/google").then(res => {
+    //         return res.json()
+    //     })
+    // }
+
     return (
         <div class="modal fade" id="sign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -109,7 +117,58 @@ function ModalConn () {
                             {/* <label>Entrer Votre Mot de passe</label> */}
                             <input onChange={event => setPassCon(event.target.value)} placeholder="Entrer Votre Mot de passe" type="password" className="form-control placeholder-no-fix" />
                         </div>
-                        <hr></hr>
+                        <br />
+                        <div className="row">
+                            <div className="col-md-4">
+                                <hr></hr>
+                            </div>
+                            <div className="col-md-4">
+                                <center style={{marginTop : "10px"}}>
+                                    <p>OU</p>
+                                </center>
+                            </div>
+                            <div className="col-md-4">
+                                <hr></hr>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a style={{
+                                    color : "white",
+                                    padding : "10px 93px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-facebook">
+                                    <i class="fa fa-facebook fa-fw"></i> 
+                                    Se Connecter avec Facebook
+                                </a>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a href="http://localhost:3001/auth/google" style={{
+                                    color : "white",
+                                    backgroundColor : "#dd4b39",
+                                    padding : "10px 102px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-google">
+                                    <i class="fa fa-google fa-fw"></i> 
+                                    Se Connecter avec Google
+                                </a>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a style={{
+                                    color : "white",
+                                    // backgroundColor : "#dd4b39",
+                                    padding : "10px 104px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-twitter">
+                                    <i class="fa fa-twitter fa-fw"></i> 
+                                    Se Connecter avec Twitter
+                                </a>
+                            </div>
+                        </div>
                     </>
                     :
                     check == "insc" ?
@@ -124,7 +183,7 @@ function ModalConn () {
                         </div>
                         <br />
                         <div className="group-control">
-                            <input onChange={event => setImageIns(event.target.value)} placeholder="Entrer Votre Email" type="file" className="form-control placeholder-no-fix" />
+                            <input onChange={event => setImageIns(event.target.value)} type="file" className="default" />
                         </div>
                         <br />
                         <div className="group-control">
@@ -146,10 +205,114 @@ function ModalConn () {
                         <div className="group-control">
                             <input onChange={event => setPassIns(event.target.value)} placeholder="Entrer Votre Mot de passe" type="password" className="form-control placeholder-no-fix" />
                         </div>
-                        <hr></hr>
+                        <br />
+                        <div className="row">
+                            <div className="col-md-4">
+                                <hr></hr>
+                            </div>
+                            <div className="col-md-4">
+                                <center style={{marginTop : "10px"}}>
+                                    <p>OU</p>
+                                </center>
+                            </div>
+                            <div className="col-md-4">
+                                <hr></hr>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a style={{
+                                    color : "white",
+                                    padding : "10px 93px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-facebook">
+                                    <i class="fa fa-facebook fa-fw"></i> 
+                                    Se Connecter avec Facebook
+                                </a>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a href="http://localhost:3001/auth/google" style={{
+                                    color : "white",
+                                    backgroundColor : "#dd4b39",
+                                    padding : "10px 102px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-google">
+                                    <i class="fa fa-google fa-fw"></i> 
+                                    Se Connecter avec Google
+                                </a>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a style={{
+                                    color : "white",
+                                    // backgroundColor : "#dd4b39",
+                                    padding : "10px 104px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-twitter">
+                                    <i class="fa fa-twitter fa-fw"></i> 
+                                    Se Connecter avec Twitter
+                                </a>
+                            </div>
+                        </div>
                     </>
                     :
-                    null
+                    <>
+                        <br />
+                        <div className="row">
+                            <div className="col-md-4">
+                                <hr></hr>
+                            </div>
+                            <div className="col-md-4">
+                                <center style={{marginTop : "10px"}}>
+                                    <p>OU</p>
+                                </center>
+                            </div>
+                            <div className="col-md-4">
+                                <hr></hr>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a style={{
+                                    color : "white",
+                                    padding : "10px 93px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-facebook">
+                                    <i class="fa fa-facebook fa-fw"></i> 
+                                    Se Connecter avec Facebook
+                                </a>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a href="http://localhost:3001/auth/google" style={{
+                                    color : "white",
+                                    backgroundColor : "#dd4b39",
+                                    padding : "10px 102px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-google">
+                                    <i class="fa fa-google fa-fw"></i> 
+                                    Se Connecter avec Google
+                                </a>
+                            </div>
+                        </div>
+                        <div className="d-flex">
+                            <div className="col-md-12">
+                                <a style={{
+                                    color : "white",
+                                    // backgroundColor : "#dd4b39",
+                                    padding : "10px 104px",
+                                    margin : "22px 0px 0px 0px"
+                                }} class="btn btn-lg btn-social btn-twitter">
+                                    <i class="fa fa-twitter fa-fw"></i> 
+                                    Se Connecter avec Twitter
+                                </a>
+                            </div>
+                        </div>
+                    </>
                     }
                 </div>
                 <div class="modal-footer">
