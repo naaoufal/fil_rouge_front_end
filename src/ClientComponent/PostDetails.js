@@ -5,20 +5,19 @@ import Header from './Header'
 import './styles/index.css'
 import ModalConn from "./Modals/ModalConn"
 import './styles/index.css'
-import firebase from 'firebase';
-import firestore from 'firebase/firestore';
+// import firebase from 'firebase';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
-    authDomain: "comments-56966.firebaseapp.com",
-    projectId: "comments-56966",
-    storageBucket: "comments-56966.appspot.com",
-    messagingSenderId: "893622129199",
-    appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
-};
+// const firebaseConfig = {
+//     apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
+//     authDomain: "comments-56966.firebaseapp.com",
+//     projectId: "comments-56966",
+//     storageBucket: "comments-56966.appspot.com",
+//     messagingSenderId: "893622129199",
+//     appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
+// };
 
-firebase.initializeApp(firebaseConfig);
-firebase.firestore();
+// firebase.initializeApp(firebaseConfig);
+// firebase.firestore();
 
 function PostDetails () {
 
@@ -35,24 +34,50 @@ function PostDetails () {
     //console.log(location.state)
     const data = location.state
 
-    const fetchTest = () => {
-        fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
-            return res.json()
-        }).then(data => {
-            console.log(data)
-            setTest(data)
-        })
-    }
+    // const fetchTest = () => {
+    //     fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
+    //         return res.json()
+    //     }).then(data => {
+    //         console.log(data)
+    //         setTest(data)
+    //     })
+    // }
 
     const sendComment = (e) => {
         if(info != null) {
-            firebase.firestore().collection('comments').add({
-                articlID : location.state._id,
-                comment : message,
-                name : info.firstname + info.lastname,
-                user_id : info._id
+            // firebase.firestore().collection('comments').add({
+            //     articlID : location.state._id,
+            //     comment : message,
+            //     name : info.firstname + info.lastname,
+            //     user_id : info._id
+            // }).then(res => {
+            //     setMessage("")
+            // })
+            // const db = admin.database().ref("posts/comments");
+            // const userRef = db.child("subComments");
+            // userRef.set({
+            //     articlID : location.state._id,
+            //     comment : message,
+            //     name : info.firstname,
+            //     user_id : info._id,
+            //     dateComment : new Date()
+            // })
+            fetch("http://localhost:3001/api/comments/addComment", {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    articleID : location.state._id,
+                    comment : message,
+                    name : info.firstname,
+                    userID : info._id,
+                    //dateComment : new Date()
+                })
             }).then(res => {
-                setMessage("")
+                res.json()
+            }).then(data => {
+                console.log(data)
             })
         }
     }
@@ -63,25 +88,26 @@ function PostDetails () {
 
     const fetchComments = async () => {
         const cmts = []
-        const response = firebase.firestore().collection('comments').onSnapshot(snap => {
-            //
-            snap.docs.map(item => {
-                //console.log(item.data())
-                if(item.data().articlID == location.state._id) {
-                    console.log(item.data())
-                    cmts.push(item.data())
-                    //setComments(item.data())
-                    setComments(cmts)
-                }
-            })
-        })
+        // firebase.firestore().collection('comments').onSnapshot(async (snap) => {
+        //     //
+        //     await snap.docs.map(item => {
+        //         //console.log(item.data())
+        //         // if(item.data().articlID == location.state._id) {
+        //             console.log(item.data())
+        //             cmts.push(item.data())
+        //             //setComments(item.data())
+        //             //setComments(cmts)
+        //         //}
+        //     })
+        // })
         //setComments(cmts)
-        // console.log(cmts)
+        //setComments(cmts)
+        //console.log()
     }
 
     useEffect(() => {
         fetchComments();
-        fetchTest()
+        //fetchTest()
     }, [])
 
 
@@ -120,13 +146,36 @@ function PostDetails () {
                                             <div class="headings d-flex justify-content-between align-items-center mb-3">
                                                 <h5>Les Commentaires</h5>
                                             </div>
+                                            {comments.map(j => (
+                                                <>
+                                                {j.articlID == location.state._id ?
+                                                    <div class="card p-3" style={{height : "auto"}}>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="user d-flex flex-row align-items-center">
+                                                                <span>
+                                                                    <small className="font-weight-bold text-primary">
+                                                                        {j.name}
+                                                                    </small>
+                                                                </span>
+                                                            </div>
+                                                            <small>2 days ago</small>
+                                                        </div>
+                                                        <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                            <div class="reply px-4">
+                                                                <small>
+                                                                    {j.comment}
+                                                                </small>
+                                                            </div>
+                                                            <span class="badge bg-success">Done</span>
+                                                        </div>
+                                                    </div>
+                                                :
+                                                null}
+                                                </>
+                                            ))}
                                         </div>
                                     </div>
                                     <hr></hr>
-                                    {/* test */}
-                                    {comments.map(j => (
-                                        <p>{j.name}</p>
-                                    ))}
                                 </div>
                                 <div className="room-box">
                                     {info != null ?
