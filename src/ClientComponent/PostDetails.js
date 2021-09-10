@@ -5,19 +5,20 @@ import Header from './Header'
 import './styles/index.css'
 import ModalConn from "./Modals/ModalConn"
 import './styles/index.css'
-// import firebase from 'firebase';
+import firebase from 'firebase';
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
-//     authDomain: "comments-56966.firebaseapp.com",
-//     projectId: "comments-56966",
-//     storageBucket: "comments-56966.appspot.com",
-//     messagingSenderId: "893622129199",
-//     appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
-// };
+const firebaseConfig = {
+    apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
+    authDomain: "comments-56966.firebaseapp.com",
+    projectId: "comments-56966",
+    storageBucket: "comments-56966.appspot.com",
+    messagingSenderId: "893622129199",
+    appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
+};
 
-// firebase.initializeApp(firebaseConfig);
-// firebase.firestore();
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
+
 
 function PostDetails () {
 
@@ -88,18 +89,18 @@ function PostDetails () {
 
     const fetchComments = async () => {
         const cmts = []
-        // firebase.firestore().collection('comments').onSnapshot(async (snap) => {
-        //     //
-        //     await snap.docs.map(item => {
-        //         //console.log(item.data())
-        //         // if(item.data().articlID == location.state._id) {
-        //             console.log(item.data())
-        //             cmts.push(item.data())
-        //             //setComments(item.data())
-        //             //setComments(cmts)
-        //         //}
-        //     })
-        // })
+        firebase.firestore().collection('comments').onSnapshot(async (snap) => {
+            //
+            await snap.docs.map(item => {
+                //console.log(item.data())
+                // if(item.data().articlID == location.state._id) {
+                    console.log(item.data())
+                    //cmts.push(item.data())
+                    //setComments(item.data())
+                    //setComments(cmts)
+                //}
+            })
+        })
         //setComments(cmts)
         //setComments(cmts)
         //console.log()
