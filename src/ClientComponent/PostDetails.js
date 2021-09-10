@@ -123,6 +123,7 @@ function PostDetails () {
                                         </div>
                                     </div>
                                     <hr></hr>
+                                    {/* test */}
                                     {comments.map(j => (
                                         <p>{j.name}</p>
                                     ))}
