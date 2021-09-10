@@ -4,22 +4,21 @@ import { toast, ToastContainer, Zoom } from "react-toastify"
 import Header from './Header'
 import './styles/index.css'
 import ModalConn from "./Modals/ModalConn"
-import io from 'socket.io-client';
 import './styles/index.css'
 import firebase from 'firebase';
-// import firestore from 'firebase/firestore';
+import firestore from 'firebase/firestore';
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
-//     authDomain: "comments-56966.firebaseapp.com",
-//     projectId: "comments-56966",
-//     storageBucket: "comments-56966.appspot.com",
-//     messagingSenderId: "893622129199",
-//     appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
-// };
+const firebaseConfig = {
+    apiKey: "AIzaSyB5qVfIxocmlU7yDhhcQuOhFYQyLauWykg",
+    authDomain: "comments-56966.firebaseapp.com",
+    projectId: "comments-56966",
+    storageBucket: "comments-56966.appspot.com",
+    messagingSenderId: "893622129199",
+    appId: "1:893622129199:web:16c9a7846001e6a5b06cda"
+};
 
-// firebase.initializeApp(firebaseConfig);
-// firebase.firestore();
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
 
 function PostDetails () {
 
@@ -33,13 +32,14 @@ function PostDetails () {
     const [tests, setTest] = useState([])
 
     const location = useLocation()
-    console.log(location.state)
+    //console.log(location.state)
     const data = location.state
 
-    const fetchTest = async () => {
-        await fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
+    const fetchTest = () => {
+        fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
             return res.json()
         }).then(data => {
+            console.log(data)
             setTest(data)
         })
     }
@@ -54,8 +54,6 @@ function PostDetails () {
             }).then(res => {
                 setMessage("")
             })
-        } else {
-            //toast.configure()
         }
     }
 
@@ -81,17 +79,13 @@ function PostDetails () {
         // console.log(cmts)
     }
 
-    useEffect( async () => {
-        await fetchComments();
+    useEffect(() => {
+        fetchComments();
+        fetchTest()
     }, [])
 
-    //console.log(comments)
 
-    function renderCommentFromFireBase () {
-        return comments.map((j) => {
-            <p>${j.comment}</p>;
-        })
-    }
+    //console.log(comments)
 
     return (
         <section id="container">
@@ -129,14 +123,9 @@ function PostDetails () {
                                         </div>
                                     </div>
                                     <hr></hr>
-                                    <div className="row">
-                                        <div className="col-md">
-                                            {/* <button onClick={setTest(!tests)}>test</button> */}
-                                            {tests.map(i => {
-                                                <p>{i.name}</p>
-                                            })}
-                                        </div>
-                                    </div>
+                                    {comments.map(j => (
+                                        <p>{j.name}</p>
+                                    ))}
                                 </div>
                                 <div className="room-box">
                                     {info != null ?
