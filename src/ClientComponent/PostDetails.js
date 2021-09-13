@@ -69,6 +69,7 @@ function PostDetails () {
                     'Content-Type' : 'application/json'
                 },
                 body : JSON.stringify({
+                    //idComment : Math.random() * (1 - 100) + 1,
                     articleID : location.state._id,
                     comment : message,
                     name : info.firstname,
@@ -87,23 +88,27 @@ function PostDetails () {
         setMessage(e.target.value)
     }
 
+    // window.addEventListener('load', () => {
+    //     fetchComments();
+    // }) 
+
     const fetchComments = async () => {
-        const cmts = []
-        firebase.firestore().collection('comments').onSnapshot(async (snap) => {
-            //
-            await snap.docs.map(item => {
-                //console.log(item.data())
-                // if(item.data().articlID == location.state._id) {
-                    console.log(item.data())
-                    //cmts.push(item.data())
-                    //setComments(item.data())
-                    //setComments(cmts)
-                //}
-            })
+        // firebase.firestore().collection('comments').orderBy('dateComment').get().then((snap) => {
+        //     snap.forEach(async(e) => {
+        //         var data = e.data()
+        //         await setComments(arr => [...arr, data])
+        //     })
+        // })
+        fetch("http://localhost:3001/api/comments/allComments", {
+            headers : {
+                'Content-Type' : 'application/json',
+                'Accept': 'application/json'
+            }
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            console.log(data)
         })
-        //setComments(cmts)
-        //setComments(cmts)
-        //console.log()
     }
 
     useEffect(() => {
@@ -112,7 +117,7 @@ function PostDetails () {
     }, [])
 
 
-    //console.log(comments)
+    console.log(comments)
 
     return (
         <section id="container">
@@ -147,33 +152,13 @@ function PostDetails () {
                                             <div class="headings d-flex justify-content-between align-items-center mb-3">
                                                 <h5>Les Commentaires</h5>
                                             </div>
-                                            {comments.map(j => (
-                                                <>
-                                                {j.articlID == location.state._id ?
-                                                    <div class="card p-3" style={{height : "auto"}}>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div class="user d-flex flex-row align-items-center">
-                                                                <span>
-                                                                    <small className="font-weight-bold text-primary">
-                                                                        {j.name}
-                                                                    </small>
-                                                                </span>
-                                                            </div>
-                                                            <small>2 days ago</small>
-                                                        </div>
-                                                        <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                                            <div class="reply px-4">
-                                                                <small>
-                                                                    {j.comment}
-                                                                </small>
-                                                            </div>
-                                                            <span class="badge bg-success">Done</span>
-                                                        </div>
-                                                    </div>
-                                                :
-                                                null}
-                                                </>
-                                            ))}
+                                            {comments.length != 0 ? 
+                                            <>
+                                                {comments && comments.map((j) => (
+                                                    <p>{j.comment}</p>
+                                                ))}
+                                            </>
+                                            : <p>they is no comment yet</p>}
                                         </div>
                                     </div>
                                     <hr></hr>
