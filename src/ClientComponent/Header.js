@@ -16,7 +16,8 @@ function Header () {
 
     // logout function:
     function logOut () {
-        sessionStorage.clear()
+        sessionStorage.clear();
+        localStorage.clear();
         toast.configure()
         toast.warning("Vous etes Deconnecter")
         history.push("/")
