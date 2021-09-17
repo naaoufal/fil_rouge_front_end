@@ -40,6 +40,7 @@ function PostDetails () {
         await fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
             return res.json()
         }).then(data => {
+            //console.log(data)
             setTest(data)
         })
     }
@@ -89,8 +90,7 @@ function PostDetails () {
     useEffect(() => {
         //fetchComments();
         fetchTest();
-    }, [])
-
+    }, []);
     //console.log(tests)
     // tests.map(cmt => {
         //console.log(cmt.comment, cmt.articlID, data._id)
@@ -130,16 +130,33 @@ function PostDetails () {
                                         <div class="col-md">
                                             <div class="headings d-flex justify-content-between align-items-center mb-3">
                                                 <h5>Les Commentaires</h5>
+                                                {tests && tests.map((i) => {
+                                                    <p>{i.name}</p>
+                                                })}
                                             </div>
                                         </div>
                                     </div>
                                     <hr></hr>
+                                    
                                     <div className="row">
                                         <div className="col-md">
                                             {/* <button onClick={setTest(!tests)}>test</button> */}
-                                            {tests.map(i => {
-                                                <p>{i.name}</p>
-                                            })}
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {tests && tests.map(i => {
+                                                        <tr>
+                                                            <td>{i._id}</td>
+                                                            <td>{i.name}</td>
+                                                        </tr>
+                                                    })}  
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

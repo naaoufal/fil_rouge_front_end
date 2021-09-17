@@ -66,7 +66,7 @@ function UserHome () {
             return res.json()
         }).then(data => {
             if(data) {
-                toast.info("Attend pour la validation de Votre post ;)")
+                toast.info("Attend pour la validation de Votre post")
                 //setChange("modal")
                 //window.location.reload()
             } else {
@@ -159,7 +159,8 @@ function UserHome () {
                                             </h5>
                                             <p>{i.desc}</p>
                                             <p><span class="text-muted">Posté Par :</span> {i.user_id} | <span class="text-muted">Tag Mentionner :</span> {i.tag} | <span class="text-muted">Posté en :</span> {i.createdAt}</p>
-                                            <p><span className="text-muted">Status :</span> {i.stat_post == "Pending" ?
+                                            <p><span className="text-muted">Status :</span> 
+                                                {i.stat_post == "Pending" ?
                                                 <span class="label label-warning">En Attente</span>
                                                 :
                                                 <span class="label label-success">résolu</span>
