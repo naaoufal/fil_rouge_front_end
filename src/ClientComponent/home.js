@@ -38,6 +38,7 @@ function UserHome () {
         fetch(process.env.REACT_APP_PUBLIC_URL+`/posts/all`).then(res => {
             return res.json()
         }).then(data => {
+            //console.log(data)
             setPosts(data)
         })
     }

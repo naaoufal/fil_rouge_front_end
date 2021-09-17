@@ -35,16 +35,6 @@ function PostDetails () {
     //console.log(location.state)
     const data = location.state
 
-<<<<<<< HEAD
-    const fetchTest = async () => {
-        await fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
-            return res.json()
-        }).then(data => {
-            //console.log(data)
-            setTest(data)
-        })
-    }
-=======
     // const fetchTest = () => {
     //     fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
     //         return res.json()
@@ -53,18 +43,17 @@ function PostDetails () {
     //         setTest(data)
     //     })
     // }
->>>>>>> 4d7f5457c7d7333ba88c3fd6354f116d88f9c03d
 
     const sendComment = (e) => {
         if(info != null) {
-            // firebase.firestore().collection('comments').add({
-            //     articlID : location.state._id,
-            //     comment : message,
-            //     name : info.firstname + info.lastname,
-            //     user_id : info._id
-            // }).then(res => {
-            //     setMessage("")
-            // })
+            firebase.firestore().collection('comments').add({
+                articlID : location.state._id,
+                comment : message,
+                name : info.firstname + info.lastname,
+                user_id : info._id
+            }).then(res => {
+                fetchComments()
+            })
             // const db = admin.database().ref("posts/comments");
             // const userRef = db.child("subComments");
             // userRef.set({
@@ -74,24 +63,23 @@ function PostDetails () {
             //     user_id : info._id,
             //     dateComment : new Date()
             // })
-            fetch("http://localhost:3001/api/comments/addComment", {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json'
-                },
-                body : JSON.stringify({
-                    //idComment : Math.random() * (1 - 100) + 1,
-                    articleID : location.state._id,
-                    comment : message,
-                    name : info.firstname,
-                    userID : info._id,
-                    //dateComment : new Date()
-                })
-            }).then(res => {
-                res.json()
-            }).then(data => {
-                console.log(data)
-            })
+            // fetch("http://localhost:3001/api/comments/addComment", {
+            //     method : 'POST',
+            //     headers : {
+            //         'Content-Type' : 'application/json'
+            //     },
+            //     body : JSON.stringify({
+            //         //idComment : Math.random() * (1 - 100) + 1,
+            //         articleID : location.state._id,
+            //         comment : message,
+            //         name : info.firstname,
+            //         userID : info._id,
+            //         //dateComment : new Date()
+            //     })
+            // }).then(res => {
+            //     //res.json()
+            //     fetchComments()
+            // })
         }
     }
 
@@ -104,44 +92,46 @@ function PostDetails () {
     // }) 
 
     const fetchComments = async () => {
-        // firebase.firestore().collection('comments').orderBy('dateComment').get().then((snap) => {
-        //     snap.forEach(async(e) => {
-        //         var data = e.data()
-        //         await setComments(arr => [...arr, data])
-        //     })
-        // })
-        fetch("http://localhost:3001/api/comments/allComments", {
-            headers : {
-                'Content-Type' : 'application/json',
-                'Accept': 'application/json'
-            }
-        }).then(res => {
-            return res.json()
-        }).then(data => {
-            console.log(data)
+        const arr = []
+        await firebase.firestore().collection("comments").onSnapshot(snap => {
+            snap.docs.map(com => {
+                //console.log(com.data())
+                arr.push(com.data())
+            })
         })
+        
+        //console.log(all)
+
+        // all.docs.map(snap => {
+        //     //console.log(snap.data())
+        //     arr.push(snap.data())
+        // })
+
+        //console.log(arr)
+
+        setComments(arr)
+
+
+        // await fetch("http://localhost:3001/api/comments/allComments", {
+        //     headers : {
+        //         'Content-Type' : 'application/json',
+        //         // 'Accept': 'application/json'
+        //     }
+        // }).then(res => {
+        //     return res.json()
+        // }).then(data => {
+        //     //console.log(data)
+        //     setComments(data)
+        // })
     }
 
     useEffect(() => {
-<<<<<<< HEAD
-        //fetchComments();
-        fetchTest();
-    }, []);
-    //console.log(tests)
-    // tests.map(cmt => {
-        //console.log(cmt.comment, cmt.articlID, data._id)
-        // if(cmt.articlID == data._id){
-            
-        // }
-    // })
-=======
         fetchComments();
         //fetchTest()
-    }, [])
+    }, [1])
 
-
+    
     console.log(comments)
->>>>>>> 4d7f5457c7d7333ba88c3fd6354f116d88f9c03d
 
     return (
         <section id="container">
@@ -175,9 +165,9 @@ function PostDetails () {
                                         <div class="col-md">
                                             <div class="headings d-flex justify-content-between align-items-center mb-3">
                                                 <h5>Les Commentaires</h5>
-                                                {tests && tests.map((i) => {
+                                                {/* {tests && tests.map((i) => {
                                                     <p>{i.name}</p>
-                                                })}
+                                                })} */}
                                             </div>
                                             {comments.length != 0 ? 
                                             <>
@@ -189,31 +179,6 @@ function PostDetails () {
                                         </div>
                                     </div>
                                     <hr></hr>
-<<<<<<< HEAD
-                                    
-                                    <div className="row">
-                                        <div className="col-md">
-                                            {/* <button onClick={setTest(!tests)}>test</button> */}
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Name</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {tests && tests.map(i => {
-                                                        <tr>
-                                                            <td>{i._id}</td>
-                                                            <td>{i.name}</td>
-                                                        </tr>
-                                                    })}  
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-=======
->>>>>>> 4d7f5457c7d7333ba88c3fd6354f116d88f9c03d
                                 </div>
                                 <div className="room-box">
                                     {info != null ?
