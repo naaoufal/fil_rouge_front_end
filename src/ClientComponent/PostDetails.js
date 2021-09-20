@@ -45,12 +45,15 @@ function PostDetails () {
     // }
 
     const sendComment = (e) => {
+        const db = firebase.firestore();
         if(info != null) {
-            firebase.firestore().collection('comments').add({
-                articlID : location.state._id,
+            db.collection('comments').add({
+                articlID : data._id,
                 comment : message,
                 name : info.firstname + info.lastname,
-                user_id : info._id
+                user_id : info._id,
+                postStatus : data.stat_post,
+                dateComment : new Date()
             }).then(res => {
                 fetchComments()
             })
@@ -92,12 +95,24 @@ function PostDetails () {
     // }) 
 
     const fetchComments = async () => {
-        const arr = []
-        await firebase.firestore().collection("comments").onSnapshot(snap => {
-            snap.docs.map(com => {
-                //console.log(com.data())
-                arr.push(com.data())
+        //const arr = []
+        await firebase.firestore().collection("comments").orderBy("dateComment").onSnapshot(snap => {
+            const arr = snap.docs.map(doc => {
+                //return doc.data()
+                return doc.data()
             })
+
+            //console.log(arr)
+            const filtredArr = arr && arr.map(i => {
+                if(i.articlID == data._id) {
+                    return i
+                } else {
+                    return false
+                }
+            })
+
+            //console.log(filtredArr)
+            setComments(filtredArr)
         })
         
         //console.log(all)
@@ -109,7 +124,7 @@ function PostDetails () {
 
         //console.log(arr)
 
-        setComments(arr)
+        //setComments(arr)
 
 
         // await fetch("http://localhost:3001/api/comments/allComments", {
@@ -131,7 +146,7 @@ function PostDetails () {
     }, [1])
 
     
-    console.log(comments)
+    //console.log(comments)
 
     return (
         <section id="container">
@@ -169,13 +184,38 @@ function PostDetails () {
                                                     <p>{i.name}</p>
                                                 })} */}
                                             </div>
-                                            {comments.length != 0 ? 
-                                            <>
-                                                {comments && comments.map((j) => (
-                                                    <p>{j.comment}</p>
-                                                ))}
-                                            </>
-                                            : <p>they is no comment yet</p>}
+                                            {comments && comments.map((j) => (
+                                                <>
+                                                    {j != "" ?
+                                                    <div className="card p-3" style={{height : "auto"}}>
+                                                        <div className="d-flex justify-content-between align-items-center">
+                                                            <div className="user d-flex flex-row align-items-center">
+                                                                <span>
+                                                                    <small className="font-weight-bold text-primary">
+                                                                        {j.name}
+                                                                    </small>
+                                                                </span>
+                                                            </div>
+                                                            <small>2 day ago</small>
+                                                        </div>
+                                                        <div className="action d-flex justify-content-between mt-2 align-items-center">
+                                                            <div className="replay px-4">
+                                                                <small>
+                                                                    {j.comment}
+                                                                </small>
+                                                            </div>
+                                                            {/* {j.postStatus == "Pending" ? 
+                                                            <span className="badge bg-warning">En Attente</span>
+                                                            :
+                                                            <span className="badge bg-error">Pas Une Solution</span>
+                                                            } */}
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    null
+                                                    }
+                                                </>
+                                            ))}
                                         </div>
                                     </div>
                                     <hr></hr>
@@ -187,7 +227,7 @@ function PostDetails () {
                                             <input type="hidden" value={info.firstname} class="form-control" />
                                         </div>
                                         <div className="col-md-10">
-                                            <textarea onChange={handleChange} value={message} rows="4" type="text" class="form-control" ></textarea>
+                                            <textarea onChange={handleChange} id="message" value={message} rows="4" type="text" class="form-control" ></textarea>
                                         </div>
                                         <div className="col-md-2">
                                             <button onClick={sendComment} class="btn btn-theme">Send</button>
