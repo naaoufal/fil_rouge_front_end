@@ -16,7 +16,41 @@ function StaffLogin () {
     toast.configure()
 
     const logIn = () => {
-        console.log(email, password)
+        //console.log(email, password)
+        fetch("http://localhost:3001/api/staffs/authStatff", {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                email : email,
+                password : password
+            })
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            localStorage.setItem('token', data.accessToken)
+            if(data.accessToken){
+                // fetch for data to login :
+                fetch("http://localhost:3001/api/staffs/all", {
+                    headers : {
+                        'Authorization' : 'Bearer ' + data.accessToken
+                    }
+                }).then(res => {
+                    return res.json()
+                }).then(data => {
+                    data.map(staff => {
+                        if(email == staff.email && password == staff.password){
+                            toast.info("Vous etes Connecté")
+                            localStorage.setItem('staffInfo', JSON.stringify(staff))
+                            history.push("/StaffDashboard")
+                        }
+                    })
+                })
+            } else {
+                toast.error("Vérifiez vos Informations !!!")
+            }
+        })
     }
 
     return (
@@ -34,7 +68,7 @@ function StaffLogin () {
                     <a data-toggle="modal" href="login.html#myModal">Mot de passe oublié ?</a>
                     </span>
                     </label>
-                <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-lock"></i> S'identifier</button>
+                <button class="btn btn-theme btn-block" onClick={logIn} type="submit"><i class="fa fa-lock"></i> S'identifier</button>
                 </div>
                 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
                 <div class="modal-dialog">
@@ -49,7 +83,7 @@ function StaffLogin () {
                     </div>
                     <div class="modal-footer">
                         <button data-dismiss="modal" class="btn btn-default" type="button">Retour</button>
-                        <button class="btn btn-theme" type="button" onClick={logIn}>Valider</button>
+                        <button class="btn btn-theme" type="button">Valider</button>
                     </div>
                     </div>
                 </div>
