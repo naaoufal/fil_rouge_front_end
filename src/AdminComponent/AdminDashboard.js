@@ -22,10 +22,22 @@ function AdminDashboard () {
         history.push("/AdminLogin")
     }
 
+
+
     useEffect(() => {
         // check if token exist or not:
         if(token) {
             console.log(info)
+            // var doughnutData = [{
+            //     value: 70,
+            //     color: "#FF6B6B"
+            //   },
+            //   {
+            //     value: 30,
+            //     color: "#fdfdfd"
+            //   }
+            // ];
+            // var myDoughnut = new Chart(document.getElementById("serverstatus01").getContext("2d")).Doughnut(doughnutData);
         } else {
             history.push("/AdminLogin")
         }
@@ -69,6 +81,26 @@ function AdminDashboard () {
                                     </div>
                                 </div>
                                 <hr />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row mt">
+                            <div class="col-md-4 col-sm-4 mb">
+                                <div class="grey-panel pn donut-chart">
+                                    <div class="grey-header">
+                                        <h5>SERVER LOAD</h5>
+                                    </div>
+                                    <canvas id="serverstatus01" height="120" width="120"></canvas>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-xs-6 goleft">
+                                            <p>Usage<br/>Increase:</p>
+                                        </div>
+                                        <div class="col-sm-6 col-xs-6">
+                                            <h2>21%</h2>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

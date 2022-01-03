@@ -18,6 +18,9 @@ function UserHome () {
     //const info = JSON.parse(localStorage.getItem('userInfo'))
     const [tags, setTags] = useState([])
     const [posts, setPosts] = useState([])
+
+    // search state :
+    const [filtred, setFiltred] = useState([])
     
     // states for posts :
     const [titlePost, setTitlePost] = useState("")
@@ -39,7 +42,8 @@ function UserHome () {
             return res.json()
         }).then(data => {
             //console.log(data)
-            setPosts(data)
+            // setPosts(data)
+            setFiltred(data)
         })
     }
 
@@ -58,6 +62,7 @@ function UserHome () {
                 title : titlePost,
                 desc : descPost,
                 user_id : info._id,
+                user_name : info.firstname,
                 is_valid : false,
                 stat_post : "Pending",
                 createdAt : Date.now(),
@@ -76,16 +81,31 @@ function UserHome () {
         })
     }
 
+    // console.log(info.firstname)
+
     // check && redirect Link :
     const redirectLink = () => {
         
+    }
+
+    // handle search :
+    function handleSearch (event) {
+        let value = event.target.value.toLowerCase()
+        let res = []
+
+        res = posts.filter((data) => {
+            return data.title.search(value) != -1;
+        })
+
+        // set new filtred value to new state :
+        setFiltred(res)
     }
 
     // render function when component loaded :
     useEffect(() => {
         renderTagsData()
         renderPostsData()
-        console.log(info)
+        // console.log(info)
     }, [])
 
     return (
@@ -98,7 +118,7 @@ function UserHome () {
                             <div class="chat-room-head">
                                 <h3>Tous Les Question</h3>
                                 <form action="#" class="pull-right position">
-                                    <input type="text" placeholder="Search" class="form-control search-btn" />
+                                    <input type="text" onChange={(event) => handleSearch(event)} placeholder="Search" class="form-control search-btn" />
                                 </form>
                             </div>
                             <div className="room-desk">
@@ -156,7 +176,7 @@ function UserHome () {
                                 </div>
                                 {/* modal end */}
                                 <ModalConn />
-                                {posts.map((i) => (
+                                {filtred.map((i) => (
                                     <>
                                     {i.is_valid == "true" ?
                                         <div class="room-box">
@@ -172,7 +192,7 @@ function UserHome () {
                                                 </a>
                                             </h5>
                                             <p>{i.desc}</p>
-                                            <p><span class="text-muted">Posté Par :</span> {i.user_id} | <span class="text-muted">Tag Mentionner :</span> {i.tag} | <span class="text-muted">Posté en :</span> {i.createdAt}</p>
+                                            <p><span class="text-muted">Posté Par :</span> <span className="label label-primary">{i.user_name}</span> | <span class="text-muted">Tag Mentionner : </span> <span className="label label-info">{i.tag}</span> | <span class="text-muted">Posté en : </span><span className="label label-default">{i.createdAt.slice(0, 10)}</span></p>
                                             <p><span className="text-muted">Status :</span> 
                                                 {i.stat_post == "Pending" ?
                                                 <span class="label label-warning">En Attente</span>
