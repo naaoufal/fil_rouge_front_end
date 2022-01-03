@@ -28,8 +28,8 @@ function UserHome () {
     const [tagPost, setTagPost] = useState("")
 
     // function render tag data :
-    const renderTagsData = () => {
-        fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
+    const renderTagsData = async () => {
+        await fetch(process.env.REACT_APP_PUBLIC_URL+`/tags/publicTags`).then(res => {
             return res.json()
         }).then(data => {
             setTags(data)

@@ -53,8 +53,9 @@ function PostDetails () {
                 name : info.firstname + info.lastname,
                 user_id : info._id,
                 postStatus : data.stat_post,
-                dateComment : new Date()
+                dateComment : Date.now()
             }).then(res => {
+                setMessage(" ")
                 fetchComments()
             })
             // const db = admin.database().ref("posts/comments");
@@ -86,6 +87,32 @@ function PostDetails () {
         }
     }
 
+    // delete a comment :
+    const deleteComment = async () => {
+        await firebase.firestore().collection("comments").orderBy("dateComment").onSnapshot(snap => {
+            const data = snap.docs.map(doc => {
+                if(doc.data().user_id == info._id) {
+                    return doc.data()
+                } else {
+                    return null
+                }
+            })
+            
+            // filred for emtpy comments value :
+            const filtred = data.filter(element => {
+                return element !== null && typeof element !== 'undefined'
+            })
+
+            // console.log(filtred)
+
+        })
+    }
+
+    // handle delete of a comment :
+    const handleDelete = async (e) => {
+        console.log(e.value.comment)
+    }
+
     const handleChange = (e) => {
         setMessage(e.target.value)
     }
@@ -95,14 +122,17 @@ function PostDetails () {
     // }) 
 
     const fetchComments = async () => {
-        //const arr = []
+        const arr = []
         await firebase.firestore().collection("comments").orderBy("dateComment").onSnapshot(snap => {
             const arr = snap.docs.map(doc => {
+                console.log(doc.id)
+                // id : doc.id
                 //return doc.data()
                 return doc.data()
             })
 
-            //console.log(arr)
+            console.log(arr)
+
             const filtredArr = arr && arr.map(i => {
                 if(i.articlID == data._id) {
                     return i
@@ -111,7 +141,7 @@ function PostDetails () {
                 }
             })
 
-            //console.log(filtredArr)
+            // console.log(filtredArr)
             setComments(filtredArr)
         })
         
@@ -141,8 +171,8 @@ function PostDetails () {
     }
 
     useEffect(() => {
-        fetchComments();
-        //fetchTest()
+        fetchComments()
+        deleteComment()
     }, [1])
 
     
@@ -196,7 +226,7 @@ function PostDetails () {
                                                                     </small>
                                                                 </span>
                                                             </div>
-                                                            <small>2 day ago</small>
+                                                            <small>{Date(j.dateComment)}</small>
                                                         </div>
                                                         <div className="action d-flex justify-content-between mt-2 align-items-center">
                                                             <div className="replay px-4">
@@ -204,6 +234,10 @@ function PostDetails () {
                                                                     {j.comment}
                                                                 </small>
                                                             </div>
+                                                            <button onClick={handleDelete(j.comment)}>
+                                                                {/* <p>{j.comment}</p> */}
+                                                                <i className='fa fa-cog'></i>
+                                                            </button>
                                                             {/* {j.postStatus == "Pending" ? 
                                                             <span className="badge bg-warning">En Attente</span>
                                                             :
