@@ -74,6 +74,14 @@ function ModalConn () {
         console.log(fname, lname, imageIns, genderIns, emailIns, addIns, teleIns, passIns)
     }
 
+    // facebook auth :
+    const facebookAuth = async () => {
+        console.log("working")
+        // fetch("http://localhost:3001/facebook/auth").then(res => {
+        //     return res.json()
+        // })
+    }
+
     // Google Auth :
     // const submitGoogleAuth = () => {
     //     //console.log("this is work")
@@ -133,7 +141,7 @@ function ModalConn () {
                         </div>
                         <div className="d-flex">
                             <div className="col-md-12">
-                                <a style={{
+                                <a href="http://localhost:3001/facebook/auth" style={{
                                     color : "white",
                                     padding : "10px 93px",
                                     margin : "22px 0px 0px 0px"

@@ -110,7 +110,7 @@ function PostDetails () {
 
     // handle delete of a comment :
     const handleDelete = async (e) => {
-        console.log(e.value.comment)
+        console.log("working")
     }
 
     const handleChange = (e) => {
@@ -234,7 +234,7 @@ function PostDetails () {
                                                                     {j.comment}
                                                                 </small>
                                                             </div>
-                                                            <button onClick={handleDelete(j.comment)}>
+                                                            <button onClick={handleDelete}>
                                                                 {/* <p>{j.comment}</p> */}
                                                                 <i className='fa fa-cog'></i>
                                                             </button>
