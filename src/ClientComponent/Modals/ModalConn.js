@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { toast, ToastContainer, Zoom } from "react-toastify"
+import FacebookAuth from 'react-facebook-auth'
 
 function ModalConn () {
 
@@ -71,16 +72,76 @@ function ModalConn () {
 
     // function to create new client :
     const createClient = () => {
-        console.log(fname, lname, imageIns, genderIns, emailIns, addIns, teleIns, passIns)
+        // console.log(fname, lname, imageIns, genderIns, emailIns, addIns, teleIns, passIns)
+        fetch("http://localhost:3001/api/clients/add", {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                firstname : fname,
+                lastname : lname,
+                gender : genderIns,
+                email : emailIns,
+                adress : addIns,
+                phone : teleIns,
+                password : passIns,
+                is_valid : false,
+                suspended : false
+            })
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            if(data) {
+                toast.success("You Register Successfuly plz Wait to Valid your account")
+            }
+        })
     }
 
     // facebook auth :
     const handleAuth = async () => {
-        // console.log("working")
+        console.log("working")
         // fetch("http://localhost:3001/facebook/auth").then(res => {
         //     return res.json()
         // })
     }
+
+    const MyFacebookButton = ({ onClick }) => (
+        <button onClick={onClick}>
+          Login with facebook
+        </button>
+    )
+       
+    const authenticate = (response) => {
+        let [fname, lname] = response.name.split(' ', 2)
+        // console.log(fname)
+        // console.log(lname)
+        // console.log(response)
+        if(response) {
+            fetch("http://localhost:3001/api/clients/add", {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    firstname : fname,
+                    lastname : lname,
+                    gender : "Empty Value",
+                    email : response.email,
+                    adress : "Empty Value",
+                    phone : 1223344551,
+                    password : fname,
+                    is_valid : false,
+                    suspended : false
+                })
+            }).then(res => {
+                if(res) {
+                    toast.info("User added Successfuly Plz Wait to Valid Your Request")
+                }
+            })
+        }
+    }
+       
 
     // Google Auth :
     // const submitGoogleAuth = () => {
@@ -140,8 +201,15 @@ function ModalConn () {
                             </div>
                         </div>
                         <div className="d-flex">
+                            <FacebookAuth
+                            appId="1631059897234576"
+                            callback={authenticate}
+                            component={MyFacebookButton}
+                            ></FacebookAuth>
+                        </div>
+                        <div className="d-flex">
                             <div className="col-md-12">
-                                <a href="http://localhost:3001/facebook/auth" style={{
+                                <a onClick={handleAuth} style={{
                                     color : "white",
                                     padding : "10px 93px",
                                     margin : "22px 0px 0px 0px"
@@ -228,8 +296,15 @@ function ModalConn () {
                             </div>
                         </div>
                         <div className="d-flex">
+                            <FacebookAuth
+                            appId="1631059897234576"
+                            callback={authenticate}
+                            component={MyFacebookButton}
+                            ></FacebookAuth>
+                        </div>
+                        <div className="d-flex">
                             <div className="col-md-12">
-                                <a href="http://localhost:3001/facebook/auth" style={{
+                                <a onClick={handleAuth} style={{
                                     color : "white",
                                     padding : "10px 93px",
                                     margin : "22px 0px 0px 0px"
@@ -283,8 +358,15 @@ function ModalConn () {
                             </div>
                         </div>
                         <div className="d-flex">
+                            <FacebookAuth
+                            appId="1631059897234576"
+                            callback={authenticate}
+                            component={MyFacebookButton}
+                            ></FacebookAuth>
+                        </div>
+                        <div className="d-flex">
                             <div className="col-md-12">
-                                <a href="http://localhost:3001/facebook/auth" style={{
+                                <a onClick={handleAuth} style={{
                                     color : "white",
                                     padding : "10px 93px",
                                     margin : "22px 0px 0px 0px"
