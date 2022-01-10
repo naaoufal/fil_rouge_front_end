@@ -301,6 +301,9 @@ function ModalConn () {
                         </div>
                         <div className="d-flex">
                             <FacebookAuth
+                            style={{
+                                padding : 20
+                            }}
                             appId="1631059897234576"
                             callback={authenticate}
                             component={MyFacebookButton}
