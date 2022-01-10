@@ -72,7 +72,7 @@ function ModalConn () {
 
     // function to create new client :
     const createClient = () => {
-        // console.log(fname, lname, imageIns, genderIns, emailIns, addIns, teleIns, passIns)
+        console.log(fname, lname, imageIns, genderIns, emailIns, addIns, teleIns, passIns)
         fetch("http://localhost:3001/api/clients/add", {
             method : 'POST',
             headers : {
@@ -272,6 +272,10 @@ function ModalConn () {
                         <br />
                         <div className="group-control">
                             <input onChange={event => setAddIns(event.target.value)} placeholder="Entrer Votre address" type="text" className="form-control placeholder-no-fix" />
+                        </div>
+                        <br />
+                        <div className="group-control">
+                            <input onChange={event => setEmailIns(event.target.value)} placeholder="Entrer Votre address Mail" type="text" className="form-control placeholder-no-fix" />
                         </div>
                         <br />
                         <div className="group-control">

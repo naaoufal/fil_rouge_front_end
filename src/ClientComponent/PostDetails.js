@@ -226,7 +226,7 @@ function PostDetails () {
                                                                     </small>
                                                                 </span>
                                                             </div>
-                                                            <small>{Date(j.dateComment)}</small>
+                                                            <small>{Date(j.dateComment).slice(0, 25)}</small>
                                                         </div>
                                                         <div className="action d-flex justify-content-between mt-2 align-items-center">
                                                             <div className="replay px-4">
